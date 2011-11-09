@@ -23,12 +23,16 @@ render = web.template.render('templates/', base="base")
 class Index:
     def GET(self):
         cli = Client()
-        query = cli.get_by_nick(nick="Yakimoto")
+        query = cli.get_by_nick(nick="Lacio")
+        query1 = cli.get_by_nick(nick="dSpIN")
 
         ALL = [int(t.id) for t in cli.all_online()]
-        PLAYER = [int(t1.online_id) for t1 in query]
-        PLA = map(lambda x,y: 1 if y is x else 0, ALL,PLAYER)
-        return render.index(ALL, PLA)
+        lac = [int(t1.online_id) for t1 in query]
+        ds = [int(t1.online_id) for t1 in query1]
+
+        LACIO = map(lambda x,y: 1 if y is x else 0, ALL, lac)
+        DSPIN = map(lambda x,y: 1 if y is x else 0, ALL, ds)
+        return render.index(ALL, LACIO, DSPIN)
 
 if __name__ == "__main__":
     app.run()

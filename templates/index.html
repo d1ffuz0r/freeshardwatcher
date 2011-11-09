@@ -1,15 +1,21 @@
-$def with (ALL, PLA)
+$def with (ALL, LACIO, DSPIN)
 $var title: This is title
-<table id="data">
-    <tfoot>
-        <tr>
-            $for d in ALL: <th>$d</th>
-        </tr>
-    </tfoot>
-    <tbody>
-        <tr>
-            $for dd in PLA: <td>$dd</td>
-        </tr>
-    </tbody>
+<table style="display: none;">
+	<caption>Online users</caption>
+	<thead>
+		<tr>
+			<td></td>
+            $for day in ALL: <th scope="col">$day</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th scope="row">dSpIN</th>
+            $for ds in DSPIN: <td>$ds</td>
+		</tr>
+		<tr>
+			<th scope="row">Lacio</th>
+            $for lac in LACIO: <td>$lac</td>
+		</tr>
+	</tbody>
 </table>
-<div id="holder"></div>

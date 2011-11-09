@@ -4,10 +4,22 @@ $def with (content)
   <head>
     <title>$content.title</title>
     <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" charset="utf-8"/>
-      <script type="text/javascript" src="/static/js/raphael-min.js"></script>
-      <script type="text/javascript" src="/static/js/jquery-1.6.4.min.js"></script>
-      <script type="text/javascript" src="/static/js/popup.js"></script>
-      <script type="text/javascript" src="/static/js/analytics.js"></script>
+    <script type="text/javascript" src="/static/js/ench/enhance.js"></script>
+    <script type="text/javascript">
+        // Run capabilities test
+        enhance({
+            loadScripts: [
+                {src: '/static/js/excanvas.js', iecondition: 'all'},
+                '/static/js/jquery-1.6.4.min.js',
+                '/static/js/visualize.jQuery.js',
+                '/static/js/example.js'
+            ],
+            loadStyles: [
+                '/static/css/visualize.css',
+                '/static/css/visualize-dark.css'
+            ]
+        });
+      </script>
   </head>
   <body>
     $:content
