@@ -1,3 +1,5 @@
+import sys
+sys.path.append("web.py-0.37-py2.7.egg")
 import json
 import db
 import web
