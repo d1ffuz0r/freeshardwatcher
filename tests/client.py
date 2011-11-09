@@ -19,7 +19,7 @@ class ClientTests(unittest.TestCase):
         ALL = [int(t.id) for t in self.cli.all_online()]
         PLAYER = [int(t1.online_id) for t1 in query]
 
-        print map(lambda x,y: (x, 1 if y is x else 0), ALL,PLAYER)
+        print map(lambda x,y: 1 if y is x else 0, ALL,PLAYER)
 
     def test_get_by_nick_false(self):
         self.assertIsNone(self.cli.get_by_nick(nick="Preree"))

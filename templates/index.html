@@ -1,0 +1,15 @@
+$def with (ALL, PLA)
+$var title: This is title
+<table id="data">
+    <tfoot>
+        <tr>
+            $for d in ALL: <th>$d</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        <tr>
+            $for dd in PLA: <td>$dd</td>
+        </tr>
+    </tbody>
+</table>
+<div id="holder"></div>
