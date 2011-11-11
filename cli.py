@@ -24,22 +24,22 @@ def static(fname):
 @app.route('/')
 @view('templates/about')
 def about():
-    return {"sdf":"sdf"}
+    pass
 
 @app.route('/help/')
 @view('templates/help')
 def help():
-    return {"sdf":"sdf"}
+    pass
 
 @app.route('/contact/')
 @view('templates/contact')
 def contact():
-    return {"sdf":"sdf"}
+    pass
 
 @app.route('/download/')
 @view('templates/download')
 def download():
-    return {"sdf":"sdf"}
+    pass
 
 @app.route('/online/')
 @view('templates/online')
@@ -61,5 +61,4 @@ def get(nick):
 
 
 if __name__ == "__main__":
-    debug(mode=True)
     run(app, host='localhost', port=8080, reloader=True)

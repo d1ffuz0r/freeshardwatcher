@@ -1,4 +1,4 @@
-%rebase templates/base active = "about"
+%rebase templates/base active = "online"
 <div style="width: 900px; margin: 0 auto;">
     <input type="text" id="char">
     <button id="send">GET</button>
