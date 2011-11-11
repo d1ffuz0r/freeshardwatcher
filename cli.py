@@ -1,3 +1,5 @@
+import sys
+sys.path.append("bottle-0.9.6-py2.7.egg")
 import json
 import db
 from bottle import Bottle, view, run, static_file, debug
@@ -24,22 +26,22 @@ def static(fname):
 @app.route('/')
 @view('templates/about')
 def about():
-    pass
+    return {"stub": "pass"}
 
 @app.route('/help/')
 @view('templates/help')
 def help():
-    pass
+    return {"stub": "pass"}
 
 @app.route('/contact/')
 @view('templates/contact')
 def contact():
-    pass
+    return {"stub": "pass"}
 
 @app.route('/download/')
 @view('templates/download')
 def download():
-    pass
+    return {"stub": "pass"}
 
 @app.route('/online/')
 @view('templates/online')
@@ -61,4 +63,5 @@ def get(nick):
 
 
 if __name__ == "__main__":
+    debug(True)
     run(app, host='localhost', port=8080, reloader=True)

@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 from time import sleep
-from urllib2 import urlopen, Request, build_opener, install_opener, HTTPCookieProcessor
+from urllib2 import urlopen, Request, build_opener,\
+    install_opener, HTTPCookieProcessor
 from re import compile, search, DOTALL, findall
 from cookielib import CookieJar
-from db import get_or_create, session, Clan, Player, Profa, Profile, PlayersOnline, Online
+from db import get_or_create, session, Clan, Player,\
+    Profa, Profile, PlayersOnline, Online
 
 class Parser(object):
     def __init__(self, server, pause=0):
@@ -24,13 +26,16 @@ class Parser(object):
         clan = get_or_create(session, Clan, name=clan)
         name = get_or_create(session, Player, name=name)
         profa = get_or_create(session, Profa, name=profa)
-        profile = get_or_create(session, Profile, **{"clan": clan.id, "name": name.id, "profa": profa.id})
+        profile = get_or_create(session, Profile, **{"clan": clan.id,
+                                                     "name": name.id,
+                                                     "profa": profa.id})
         return {"clan": clan, "profa": profa, "name": name}
 
     def _online_now(self, data):
         online_now_id = data['time'].id
         for player in data["online"]:
-            get_or_create(session, PlayersOnline, **{"player_id": player["name"].id, "online_id": online_now_id})
+            get_or_create(session, PlayersOnline, **{"player_id": player["name"].id,
+                                                     "online_id": online_now_id})
 
     def parse(self):
         time = Online()
@@ -38,9 +43,7 @@ class Parser(object):
         res = {"time": time, "online": []}
         html = search(self.regexp, self.get_content()).group(1).replace('\r\n','')
         for line in findall(self.regexp2, html):
-            name = line[0]
-            profa, clan = line[1], line[2]
-            res["online"].append(self.add(name, profa, clan))
+            res["online"].append(self.add(line[0], line[1], line[2]))
         self._online_now(res)
 
     def start(self):

@@ -1,8 +1,9 @@
+import sys
+sys.path.append("autumn-0.5.1-py2.7.egg")
 from datetime import datetime
 from sqlalchemy import *
-from sqlalchemy.orm import relationship, Session
+from sqlalchemy.orm import Session
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.ext.associationproxy import association_proxy
 
 engine = create_engine("mysql://root:root@localhost:3306/l2planet", echo=False)
 session = Session(engine)
@@ -65,11 +66,6 @@ class Online(Base):
 
     id = Column(Integer, primary_key=True)
     date = Column(DateTime)
-    players_online = relationship("PlayersOnline",
-                                primaryjoin="and_(Online.id == PlayersOnline.online_id)",
-                                cascade="all, delete-orphan",
-                                backref='online')
-    players = association_proxy("online_players", "online_id")
 
     def __init__(self):
         self.date = datetime.now()
