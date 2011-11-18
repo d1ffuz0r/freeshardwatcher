@@ -1,4 +1,4 @@
-%rebase templates/base active = "about"
+%rebase base active = "about"
 <div id="teaser">
   <div class="wrap">
     <div id="image"></div>

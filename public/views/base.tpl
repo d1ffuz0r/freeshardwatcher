@@ -12,11 +12,13 @@
                 {src: '/static/js/excanvas.js', iecondition: 'all'},
                 '/static/js/jquery-1.6.4.min.js',
                 '/static/js/visualize.jQuery.js',
+                '/static/js/jquery-ui-1.8.16.custom.min.js',
                 '/static/js/example.js'
             ],
             loadStyles: [
                 '/static/css/visualize.css',
-                '/static/css/visualize-dark.css'
+                '/static/css/visualize-dark.css',
+                '/static/css/jquery-ui-1.8.16.custom.css'
             ]
         });
       </script>
@@ -61,7 +63,7 @@
 %end
 <div id="footer">
   <p class="right">Design: <a href="http://www.solucija.com/">Luka Cvrk</a></p>
-  <p>&copy; Copyright 2011 <a href="#">FreeShard Watcher</a> &middot; All Rights Reserved</p>
+  <p>&copy; Copyright 2011 <a href="http://freeshardwatcher.tk">FreeShard Watcher</a> &middot; All Rights Reserved</p>
 </div>
 </body>
 </html>
