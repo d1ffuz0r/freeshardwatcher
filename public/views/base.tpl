@@ -63,7 +63,7 @@
 %end
 <div id="footer">
   <p class="right">Design: <a href="http://www.solucija.com/">Luka Cvrk</a></p>
-  <p>&copy; Copyright 2011 <a href="http://freeshardwatcher.tk">FreeShard Watcher</a> &middot; All Rights Reserved</p>
+  <p>&copy; Copyright 2011 <a href="http://freeshardwatcher.tk">FreeShard Watcher</a></p>
 </div>
 </body>
 </html>

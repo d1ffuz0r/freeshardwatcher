@@ -86,4 +86,3 @@ class Parser(object):
 if __name__ == '__main__':
     parser = Parser(pause=5, server="x5")
     parser.start()
-    #parser.get()
