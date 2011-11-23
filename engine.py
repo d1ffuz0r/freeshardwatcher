@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import logging
+import datetime
 from time import sleep
 from urllib2 import urlopen, Request, build_opener,\
     install_opener, HTTPCookieProcessor
@@ -13,15 +14,15 @@ class Parser(object):
     Parser class
     to parse and save in storage information from html pages
     """
-    def __init__(self, server, pause=0):
+    def __init__(self, pause=0):
         """
         Initialization class
         params:
         - server(so far to work be with server(l2planer.ws))
         - pause(pause between getting pages, in minutes)
         """
-        #todo to realize work with many servers(asterios, l2, theonline)
-        self.url = "http://www.l2planet.ws/?go=online&server={server}".format(server=server)
+        #todo to realize work with many servers (asterios, l2, theonline)
+        self.url = "http://www.l2planet.ws/?go=online&server=x5"
         self.regexp = compile(r'<table\sclass="sort"><thead>.*</thead><tbody>(.*?)</tbody></table>', DOTALL)
         self.regexp2 = compile(r'<tr><td>.*?</td><td>(?P<name>.*?)</td><td>.*?</td><td>.*?</td><td>(?P<prof>.*?)</td><td>(?P<clan>.*?)</td><td>.*?</td></tr>')
         self.pause = pause
@@ -59,7 +60,7 @@ class Parser(object):
         """
         parse page
         """
-        time = Online().create()
+        time = Online(date=datetime.datetime.now()).create()
         res = {"time": time, "online": []}
         html = search(self.regexp, self.get_content()).group(1).replace('\r\n','')
         for line in findall(self.regexp2, html):
@@ -84,5 +85,5 @@ class Parser(object):
         self.parse()
 
 if __name__ == '__main__':
-    parser = Parser(pause=5, server="x5")
+    parser = Parser(pause=5)
     parser.start()

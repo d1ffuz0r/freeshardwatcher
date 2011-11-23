@@ -4,24 +4,14 @@
     <title>FreeShard Watcher</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="/static/css/main.css" type="text/css" media="screen" charset="utf-8"/>
-    <script type="text/javascript" src="/static/js/ench/enhance.js"></script>
-    <script type="text/javascript">
-        // Run capabilities test
-        enhance({
-            loadScripts: [
-                {src: '/static/js/excanvas.js', iecondition: 'all'},
-                '/static/js/jquery-1.6.4.min.js',
-                '/static/js/visualize.jQuery.js',
-                '/static/js/jquery-ui-1.8.16.custom.min.js',
-                '/static/js/example.js'
-            ],
-            loadStyles: [
-                '/static/css/visualize.css',
-                '/static/css/visualize-dark.css',
-                '/static/css/jquery-ui-1.8.16.custom.css'
-            ]
-        });
-      </script>
+    <link rel="stylesheet" href="/static/css/visualize.css" type="text/css" media="screen" charset="utf-8"/>
+    <link rel="stylesheet" href="/static/css/visualize-dark.css" type="text/css" media="screen" charset="utf-8"/>
+    <link rel="stylesheet" href="/static/css/jquery-ui-1.8.16.custom.css" type="text/css" media="screen" charset="utf-8"/>
+    <script type="text/javascript" src="/static/js/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="/static/js/visualize.jQuery.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="/static/js/example.js"></script>
+    <script type="text/javascript" src="/static/js/excanvas.js"></script>
 </head>
 <body>
 <div id="header">
@@ -54,7 +44,7 @@
     %end
   </ul>
 </div>
-%if active == 'about':
+%if active == 'about' or active == 'online':
   %include
 %else:
   <div class="content">

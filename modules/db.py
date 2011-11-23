@@ -1,12 +1,12 @@
-from datetime import datetime
+from config import conf
 from modules.peewee import MySQLDatabase, Model, CharField,\
     DateTimeField, ForeignKeyField, Q
 
 connection = MySQLDatabase(
-    host="mysql.alwaysdata.com",
-    database='freeshardwatcher_db',
-    user="freeshardwatcher",
-    passwd="p300aj2"
+    host=conf["host"],
+    database=conf["database"],
+    user=conf["user"],
+    passwd=conf["password"]
 )
 
 class BaseModel(Model):
@@ -57,7 +57,7 @@ class Online(BaseModel):
      - date
     tablename: online
     """
-    date = DateTimeField(default=datetime.now())
+    date = DateTimeField()
 
     class Meta:
         db_table = "online"
@@ -117,22 +117,62 @@ def create_tables():
 
 makedate = lambda date: datetime.strptime(date, "%d.%m.%Y")
 
-def all_online():
-    """
-    to get list all stamps a Online
-    """
-    return Online.select().order_by('id')
-
-def get_by_nick(nick, dfrom=False, dto=False):
+def get_by_nick(nick=None, frm=None, to=None):
     """
     to get order by nick
     """
-    #todo ned refactoring
-    try:
+    if nick:
         player = Player.select().where(name=nick).get()
-        q = InOnline.select().where(player=player)
-        if dfrom and dto:
-            q = q.join(Online).where(Q(date__gte=makedate(dfrom)) & Q(date__lte=makedate(dto)))
-        return q
-    except ValueError:
+        in_online = InOnline.select().order_by('id')
+        q_online = Online.select().order_by('id')
+
+        if (frm and frm is not '') and (to and to is not ''):
+            online = q_online.where(Q(date__gte=makedate(frm)) & Q(date__lte=makedate(to)))
+            player_online = in_online.where(player=player, online__in=online)
+            total = [x.id for x in online]
+            dates = [x.date.strftime("%d.%m") for x in online]
+
+        elif frm and frm is not '':
+            online = q_online.where(date__gte=makedate(frm))
+            player_online = in_online.where(player=player, online__in=online)
+            total = [x.id for x in online]
+            dates = [x.date.strftime("%d.%m") for x in online]
+
+        elif to and to is not '':
+            online = q_online.where(date__lte=makedate(to))
+            player_online = in_online.where(player=player, online__in=online)
+            total = [x.id for x in online]
+            dates = [x.date.strftime("%d.%m") for x in online]
+
+        else:
+            player_online = in_online.where(player=player)
+            total = [x.id for x in q_online]
+            dates = [x.date.strftime("%d.%m") for x in q_online]
+
+        player_all = [p.online_id for p in player_online]
+        all = map(lambda x: 1 if x in player_all else 0, total)
+
+        return {'all': dates, 'player': all}
+    else:
         return None
+
+    """
+        try:
+            if nick:
+                #todo need fix!
+                player = Player.select().where(name=nick).get()
+                online = InOnline.select().where(player=player)
+                if dfrom and dto:
+                    online = online.join(Online).filter(Q(date__gte=makedate(dfrom)) & Q(date__lte=makedate(dto)))
+                elif dfrom:
+                    online = online.join(Online).filter(date__gte=makedate(dfrom))
+                elif dto:
+                    online = online.join(Online).filter(date__lte=makedate(dto))
+                else:
+                    pass
+                return online
+            else:
+                return None
+        except ValueError:
+            return None
+        """

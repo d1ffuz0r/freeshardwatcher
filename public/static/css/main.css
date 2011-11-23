@@ -68,6 +68,7 @@ img {
 
 .wrap {
     width: 900px;
+    height: 259px;
     margin: 0 auto;
 }
 
@@ -110,7 +111,7 @@ img {
 #teaser {
     clear: both;
     height: 259px;
-    background: #fff url(/static/images/teaserbg.jpg) repeat-x;
+    background: url(/static/images/teaserbg.jpg) repeat-x;
 }
 
 .box {
@@ -191,4 +192,18 @@ img {
 #footer a {
     color: #808080;
     font-weight: bold;
+}
+
+.online-rows{
+    width: 900px; margin: 0 auto;
+}
+.online-rows p{
+    margin: 0 0 1em 0;
+    width: 210px;
+}
+.online-rows p button{
+    float: right;
+}
+.online-rows p input{
+    float: right;
 }

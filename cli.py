@@ -54,11 +54,7 @@ def online():
     """
     page online results
     """
-    query = db.get_by_nick(nick="dSpIN")
-    ALL = map(lambda id: int(id.id), db.all_online())
-    stat = map(lambda id: int(id.online_id), query)
-    DEFAULT = map(lambda x: 1 if x in stat else 0, ALL)
-    return {"all_days": ALL, "default": DEFAULT}
+    return {"stub": "pass"}
 
 @app.route('/get', method="POST")
 @app.route('/get/', method="POST")
@@ -68,14 +64,11 @@ def get():
     get results for to nick
     """
     nick = request.forms.get("nick")
-    dfrom = request.forms.get("from")
-    dto = request.forms.get("to")
+    frm = request.forms.get("from")
+    to = request.forms.get("to")
 
-    query = db.get_by_nick(nick=nick, dfrom=dfrom, dto=dto)
+    query = db.get_by_nick(nick=nick, frm=frm, to=to)
     if query:
-        ALL = map(lambda id: int(id.id), db.all_online())
-        stat = map(lambda id: int(id.online_id), query)
-        ss = map(lambda x: 1 if x in stat else 0, ALL)
-        return dumps({"all": ALL, "stat": ss})
+        return dumps({"all": query["all"], "stat": query["player"]})
     else:
         return dumps({"message": "Not found"})
