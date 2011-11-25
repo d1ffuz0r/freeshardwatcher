@@ -60,7 +60,7 @@ class Parser(object):
         """
         parse page
         """
-        time = Online(date=datetime.datetime.now()).create()
+        time = Online().create(date=datetime.datetime.now())
         res = {"time": time, "online": []}
         html = search(self.regexp, self.get_content()).group(1).replace('\r\n','')
         for line in findall(self.regexp2, html):

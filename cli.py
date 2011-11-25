@@ -1,7 +1,7 @@
 from json import dumps
 from modules import db
 from modules.bottle import Bottle, view, run,\
-    static_file, post, request
+    static_file, request
 
 app = Bottle()
 
@@ -69,6 +69,6 @@ def get():
 
     query = db.get_by_nick(nick=nick, frm=frm, to=to)
     if query:
-        return dumps({"all": query["all"], "stat": query["player"]})
+        return dumps({"result": query})
     else:
         return dumps({"message": "Not found"})

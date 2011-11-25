@@ -10,13 +10,14 @@ function get(nick){
         }
         else{
             $('.all').empty().append("<td></td>");
-            for(var i in data.all){
-                var val = data.all[i];
+            var result = data.result;
+            for(var i in result.all){
+                var val = result.all[i];
                 $('.all').append("<th scope='col'>"+val+"</th>");
             }
             $("tbody").empty().append("<tr class='player'><th scope='row'>"+$("#char").val().toString()+"</th></tr>");
-            for(var i in data.stat){
-                var val = data.stat[i];
+            for(var i in result.player){
+                var val = result.player[i];
                 $('.player').append("<td>"+val+"</td>");
             }
             $('.visualize').trigger('visualizeRefresh');
