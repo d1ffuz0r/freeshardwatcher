@@ -1,5 +1,6 @@
-from config import conf
 from datetime import datetime
+
+from config import conf
 from modules.peewee import MySQLDatabase, Model, CharField,\
     DateTimeField, ForeignKeyField, Q
 
@@ -11,20 +12,17 @@ connection = MySQLDatabase(
 )
 
 class BaseModel(Model):
-    """
-    Base model
-    to make connection db
-    """
+    """Base model. To make connection db"""
     class Meta:
         database = connection
 
 class Profession(BaseModel):
-    """
-    Profession model
-    to store profession names
-    rows:
-     - name
-    tablename: profession
+    """Profession model. To store profession names
+    
+       Keyword arguments:
+       name -- profession name
+    
+       tablename: profession
     """
     name = CharField()
 
@@ -35,12 +33,12 @@ class Profession(BaseModel):
         return self.name
 
 class Clan(BaseModel):
-    """
-    Clan model
-    to store clans names
-    rows:
-     - name
-    tablename: clan
+    """Clan model. To store clans names
+    
+       Keyword arguments:
+       name -- clan name
+    
+       tablename: clan
     """
     name = CharField()
 
@@ -51,12 +49,12 @@ class Clan(BaseModel):
         return self.name
 
 class Online(BaseModel):
-    """
-    Online model
-    to store online stamp
-    rows:
-     - date
-    tablename: online
+    """Online model. To store online stamp
+    
+       Keyword arguments:
+       date -- datetime stamp
+    
+       tablename: online
     """
     date = DateTimeField()
 
@@ -67,14 +65,14 @@ class Online(BaseModel):
         return self.date
 
 class Player(BaseModel):
-    """
-    Player model
-    to store player informations
-    rows:
-    - name
-    - profession
-    - clan
-    tablename: player
+    """Player model. To store player information's
+    
+       Keyword arguments:
+       name -- player nmame
+       profession -- profession id
+       clan -- clan id
+    
+       tablename: player
     """
     name = CharField()
     profession = ForeignKeyField(Profession)
@@ -87,13 +85,13 @@ class Player(BaseModel):
         return self.name
 
 class InOnline(BaseModel):
-    """
-    InOnline model
-    to store relations between Player and Online models
-    rows:
-    - player(id)
-    - online(id)
-    tablename: online_players
+    """InOnline model. To store relations between Player and Online models
+    
+       Keyword arguments:
+       player -- player id
+       online -- inline id
+    
+       tablename: online_players
     """
     player = ForeignKeyField(Player)
     online = ForeignKeyField(Online)
@@ -107,9 +105,7 @@ class InOnline(BaseModel):
 connection.connect()
 
 def create_tables():
-    """
-    create all tables
-    """
+    """Create all tables"""
     Player.create_table()
     Clan.create_table()
     Profession.create_table()
@@ -119,8 +115,13 @@ def create_tables():
 makedate = lambda date: datetime.strptime(date, "%d.%m.%Y")
 
 def get_by_nick(nick=None, frm=None, to=None):
-    """
-    to get order by nick
+    """To get order by nick
+    
+       Keyword arguments:
+       nick -- player name
+       frm -- filter date from
+       to -- filter date to
+    
     """
     if nick:
         player = Player.select().where(name=nick).get()
@@ -156,24 +157,3 @@ def get_by_nick(nick=None, frm=None, to=None):
         return {'all': dates, 'player': all}
     else:
         return None
-
-    """
-        try:
-            if nick:
-                #todo need fix!
-                player = Player.select().where(name=nick).get()
-                online = InOnline.select().where(player=player)
-                if dfrom and dto:
-                    online = online.join(Online).filter(Q(date__gte=makedate(dfrom)) & Q(date__lte=makedate(dto)))
-                elif dfrom:
-                    online = online.join(Online).filter(date__gte=makedate(dfrom))
-                elif dto:
-                    online = online.join(Online).filter(date__lte=makedate(dto))
-                else:
-                    pass
-                return online
-            else:
-                return None
-        except ValueError:
-            return None
-        """

@@ -2,24 +2,24 @@
 import logging
 import datetime
 from time import sleep
+
 from urllib2 import urlopen, Request, build_opener,\
     install_opener, HTTPCookieProcessor
 from re import compile, search, DOTALL, findall
 from cookielib import CookieJar
-from modules.db import Player, Clan, Online,\
+
+from modules.db import Player, Clan, Online, \
     InOnline, Profession
 
 class Parser(object):
-    """
-    Parser class
-    to parse and save in storage information from html pages
-    """
-    def __init__(self, pause=0):
-        """
-        Initialization class
-        params:
-        - server(so far to work be with server(l2planer.ws))
-        - pause(pause between getting pages, in minutes)
+    """Parser class. To parse and save in storage information from html pages"""
+
+    def __init__(self, pause=5):
+        """Initialization class
+        
+           Keyword arguments:
+           pause -- pause between getting pages, in minutes (default 5)
+        
         """
         #todo to realize work with many servers (asterios, l2, theonline)
         self.url = "http://www.l2planet.ws/?go=online&server=x5"
@@ -32,15 +32,18 @@ class Parser(object):
         self.headers = {"User-Agent": "Mozilla/4.0 (compatible; MSIE 7; WindowsNT)"}
 
     def get_content(self):
-        """
-        get content from page
-        """
+        """Get content from page"""
         page = urlopen(Request(self.url, headers=self.headers))
         return page.read()
 
     def add(self, name, profa, clan):
-        """
-        get or create information in database
+        """Get or create information in database
+        
+           Keyword arguments:
+           name -- name user
+           profa -- profession name
+           clan -- clan name
+        
         """
         clan = Clan.get_or_create(name=clan)
         profa = Profession.get_or_create(name=profa)
@@ -49,17 +52,18 @@ class Parser(object):
         return {"clan": clan, "profa": profa, "name": name}
 
     def _online_now(self, data):
-        """
-        to append all users who in online now
+        """To append all users who in online now
+        
+           Keyword arguments:        
+           data -- all players in online
+        
         """
         online_now = data['time']
         for player in data["online"]:
             InOnline.create(player=player["name"], online=online_now)
 
     def parse(self):
-        """
-        parse page
-        """
+        """Parse page"""
         time = Online().create(date=datetime.datetime.now())
         res = {"time": time, "online": []}
         html = search(self.regexp, self.get_content()).group(1).replace('\r\n','')
@@ -68,9 +72,7 @@ class Parser(object):
         self._online_now(res)
 
     def start(self):
-        """
-        start engine
-        """
+        """Start engine"""
         __all__ = 0
         while True:
             __all__ += 1
@@ -79,11 +81,9 @@ class Parser(object):
             sleep(60*self.pause)
 
     def get(self):
-        """
-        stub for testings
-        """
+        """Stub for testing"""
         self.parse()
 
 if __name__ == '__main__':
-    parser = Parser(pause=5)
+    parser = Parser(pause=30)
     parser.start()
