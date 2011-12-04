@@ -11,15 +11,17 @@ from cookielib import CookieJar
 from modules.db import Player, Clan, Online, \
     InOnline, Profession
 
+
 class Parser(object):
+
     """Parser class. To parse and save in storage information from html pages"""
 
     def __init__(self, pause=5):
         """Initialization class
-        
+
            Keyword arguments:
            pause -- pause between getting pages, in minutes (default 5)
-        
+
         """
         #todo to realize work with many servers (asterios, l2, theonline)
         self.url = "http://www.l2planet.ws/?go=online&server=x5"
@@ -38,12 +40,12 @@ class Parser(object):
 
     def add(self, name, profa, clan):
         """Get or create information in database
-        
+
            Keyword arguments:
            name -- name user
            profa -- profession name
            clan -- clan name
-        
+
         """
         clan = Clan.get_or_create(name=clan)
         profa = Profession.get_or_create(name=profa)
@@ -53,10 +55,10 @@ class Parser(object):
 
     def _online_now(self, data):
         """To append all users who in online now
-        
-           Keyword arguments:        
+
+           Keyword arguments:
            data -- all players in online
-        
+
         """
         online_now = data['time']
         for player in data["online"]:
@@ -66,7 +68,7 @@ class Parser(object):
         """Parse page"""
         time = Online().create(date=datetime.datetime.now())
         res = {"time": time, "online": []}
-        html = search(self.regexp, self.get_content()).group(1).replace('\r\n','')
+        html = search(self.regexp, self.get_content()).group(1).replace('\r\n', '')
         for line in findall(self.regexp2, html):
             res["online"].append(self.add(line[0], line[1], line[2]))
         self._online_now(res)
@@ -78,7 +80,7 @@ class Parser(object):
             __all__ += 1
             self.parse()
             print __all__
-            sleep(60*self.pause)
+            sleep(60 * self.pause)
 
     def get(self):
         """Stub for testing"""

@@ -11,17 +11,19 @@ connection = MySQLDatabase(
     passwd=conf["password"]
 )
 
+
 class BaseModel(Model):
     """Base model. To make connection db"""
     class Meta:
         database = connection
 
+
 class Profession(BaseModel):
     """Profession model. To store profession names
-    
+
        Keyword arguments:
        name -- profession name
-    
+
        tablename: profession
     """
     name = CharField()
@@ -32,12 +34,13 @@ class Profession(BaseModel):
     def __unicode__(self):
         return self.name
 
+
 class Clan(BaseModel):
     """Clan model. To store clans names
-    
+
        Keyword arguments:
        name -- clan name
-    
+
        tablename: clan
     """
     name = CharField()
@@ -48,12 +51,13 @@ class Clan(BaseModel):
     def __unicode__(self):
         return self.name
 
+
 class Online(BaseModel):
     """Online model. To store online stamp
-    
+
        Keyword arguments:
        date -- datetime stamp
-    
+
        tablename: online
     """
     date = DateTimeField()
@@ -64,14 +68,15 @@ class Online(BaseModel):
     def __unicode__(self):
         return self.date
 
+
 class Player(BaseModel):
     """Player model. To store player information's
-    
+
        Keyword arguments:
        name -- player nmame
        profession -- profession id
        clan -- clan id
-    
+
        tablename: player
     """
     name = CharField()
@@ -84,13 +89,14 @@ class Player(BaseModel):
     def __unicode__(self):
         return self.name
 
+
 class InOnline(BaseModel):
     """InOnline model. To store relations between Player and Online models
-    
+
        Keyword arguments:
        player -- player id
        online -- inline id
-    
+
        tablename: online_players
     """
     player = ForeignKeyField(Player)
@@ -102,7 +108,9 @@ class InOnline(BaseModel):
     def __unicode__(self):
         return '%s/%s' % (self.player, self.online)
 
+
 connection.connect()
+
 
 def create_tables():
     """Create all tables"""
@@ -114,14 +122,15 @@ def create_tables():
 
 makedate = lambda date: datetime.strptime(date, "%d.%m.%Y")
 
+
 def get_by_nick(nick=None, frm=None, to=None):
     """To get order by nick
-    
+
        Keyword arguments:
        nick -- player name
        frm -- filter date from
        to -- filter date to
-    
+
     """
     if nick:
         player = Player.select().where(name=nick).get()
@@ -129,7 +138,9 @@ def get_by_nick(nick=None, frm=None, to=None):
         q_online = Online.select().order_by('id')
 
         if (frm and frm is not '') and (to and to is not ''):
-            online = q_online.where(Q(date__gte=makedate(frm)) & Q(date__lte=makedate(to)))
+            online = q_online.where(
+                Q(date__gte=makedate(frm)) & Q(date__lte=makedate(to))
+            )
             player_online = in_online.where(player=player, online__in=online)
             total = [x.id for x in online]
             dates = [x.date.strftime("%d.%m") for x in online]
