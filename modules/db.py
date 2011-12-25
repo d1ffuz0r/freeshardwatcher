@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 
 from config import conf
 from modules.peewee import MySQLDatabase, Model, CharField,\
@@ -19,10 +20,10 @@ class BaseModel(Model):
 
 
 class Profession(BaseModel):
-    """Profession model. To store profession names
+    """
+       Profession model. To store profession names
 
-       Keyword arguments:
-       name -- profession name
+       @param name: name of profession
 
        tablename: profession
     """
@@ -36,10 +37,10 @@ class Profession(BaseModel):
 
 
 class Clan(BaseModel):
-    """Clan model. To store clans names
+    """
+       Clan model. To store clans names
 
-       Keyword arguments:
-       name -- clan name
+       @param name: name of clan
 
        tablename: clan
     """
@@ -53,10 +54,10 @@ class Clan(BaseModel):
 
 
 class Online(BaseModel):
-    """Online model. To store online stamp
+    """
+       Online model. To store online stamp
 
-       Keyword arguments:
-       date -- datetime stamp
+       @param date: timeshtamp when make parse
 
        tablename: online
     """
@@ -70,12 +71,12 @@ class Online(BaseModel):
 
 
 class Player(BaseModel):
-    """Player model. To store player information's
+    """
+       Player model. To store player information's
 
-       Keyword arguments:
-       name -- player nmame
-       profession -- profession id
-       clan -- clan id
+       @param name: name of player
+       @param profession: profession id
+       @param clan: clan id
 
        tablename: player
     """
@@ -91,11 +92,11 @@ class Player(BaseModel):
 
 
 class InOnline(BaseModel):
-    """InOnline model. To store relations between Player and Online models
+    """
+       InOnline model. To store relations between Player and Online models
 
-       Keyword arguments:
-       player -- player id
-       online -- inline id
+       @param player: player id
+       @param online: online id
 
        tablename: online_players
     """
@@ -124,13 +125,13 @@ makedate = lambda date: datetime.strptime(date, "%d.%m.%Y")
 
 
 def get_by_nick(nick=None, frm=None, to=None):
-    """To get order by nick
+    """
+    To get order by nick
 
-       Keyword arguments:
-       nick -- player name
-       frm -- filter date from
-       to -- filter date to
-
+    @param nick: player name
+    @param frm: filter date from
+    @param to: filter date to
+    @return dict: dates and player state
     """
     if nick:
         player = Player.select().where(name=nick).get()
@@ -168,3 +169,28 @@ def get_by_nick(nick=None, frm=None, to=None):
         return {'all': dates, 'player': all}
     else:
         return None
+
+def add(name, profa, clan):
+    """
+    Get or create information in database
+
+    @param name: name user
+    @param profa: profession name
+    @param clan: clan name
+    @return dict:
+    """
+    clan = Clan.get_or_create(name=clan)
+    profa = Profession.get_or_create(name=profa)
+    name = Player.get_or_create(name=name, profession=profa, clan=clan)
+    logging.warning({"clan": clan, "profa": profa, "name": name})
+    return {"clan": clan, "profa": profa, "name": name}
+
+def _online_now(data):
+    """
+    To append all users who in online now
+
+    @param data: all players in online
+    """
+    online_now = data['time']
+    for player in data["online"]:
+        InOnline.create(player=player["name"], online=online_now)
