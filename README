@@ -1,8 +1,0 @@
-sql
---------------------------
-SELECT pl.name AS player, c.name AS clan, p.name AS profession
-FROM player AS pl
-JOIN clan AS c
-JOIN profession AS p ON pl.clan_id = c.id
-AND pl.profession_id = p.id
-WHERE pl.name =  'karata'
