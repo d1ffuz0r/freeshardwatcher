@@ -42,8 +42,8 @@ class Parser(object):
         time = Online().create(date=datetime.datetime.now())
         res = {"time": time, "online": []}
         html = search(self.regexp, self.get_content()).group(1).replace('\r\n', '')
-        for line in findall(self.regexp2, html):
-            res["online"].append(add(line[0], line[1], line[2]))
+        #res["online"] = map(lambda line: add(line[0], line[1], line[2]), findall(self.regexp2, html))
+        res["online"] = [add(line[0], line[1], line[2]) for line in findall(self.regexp2, html)]
         _online_now(res)
 
     def start(self):

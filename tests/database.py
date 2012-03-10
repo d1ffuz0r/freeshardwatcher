@@ -45,7 +45,7 @@ class TestsDatabase(unittest.TestCase):
     def test_get_by_nick_returns(self):
         request = db.get_by_nick(nick="Lacio")
         self.assertEqual(request["player"], [1, 1, 1, 1, 1, 1, 1, 0, 0])
-        self.assertTrue(isinstance(request["all"], SelectQuery))
+        self.assertIsInstance(request["all"], SelectQuery)
 
     def test_get_by_nick_none(self):
         request = db.get_by_nick()
@@ -54,30 +54,30 @@ class TestsDatabase(unittest.TestCase):
     def test_get_by_nick_total(self):
         request = db.get_by_nick(nick="Lacio")
         self.assertEqual(request["player"], [1, 1, 1, 1, 1, 1, 1, 0, 0])
-        self.assertTrue(isinstance(request["all"], SelectQuery))
+        self.assertIsInstance(request["all"], SelectQuery)
 
     def test_get_by_nick_from(self):
         request = db.get_by_nick(nick="Lacio", frm="15.11.2011")
         self.assertEqual(request["player"], [0, 0])
-        self.assertTrue(isinstance(request["all"], SelectQuery))
+        self.assertIsInstance(request["all"], SelectQuery)
 
     def test_get_by_nick_to(self):
         request = db.get_by_nick(nick="Lacio", to="14.11.2011")
         self.assertEqual(request["player"], [1, 1, 1, 1, 1, 1, 1])
-        self.assertTrue(isinstance(request["all"], SelectQuery))
+        self.assertIsInstance(request["all"], SelectQuery)
 
     def test_get_by_nick_from_to(self):
         request = db.get_by_nick(nick="Lacio",
                                  frm="12.11.2011",
                                  to="22.11.2011")
         self.assertEqual(request["player"], [1, 1, 1, 1, 1, 1, 1])
-        self.assertTrue(isinstance(request["all"], SelectQuery))
+        self.assertIsInstance(request["all"], SelectQuery)
 
         request1 = db.get_by_nick(nick="Lacio",
                                   frm="12.11.2011",
                                   to="27.11.2011")
         self.assertEqual(request1["player"], [1, 1, 1, 1, 1, 1, 1, 0, 0])
-        self.assertTrue(isinstance(request1["all"], SelectQuery))
+        self.assertIsInstance(request1["all"], SelectQuery)
 
 if __name__ == "__main__":
     unittest.main()
